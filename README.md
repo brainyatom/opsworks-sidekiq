@@ -33,6 +33,19 @@ Here is an example Custom JSON:
 }
 ```
 
+Or with just using the defaults:
+```json
+{
+  "deploy": {
+    "YOURAPPNAME": {
+      "sidekiq": {}
+    }
+  }
+}
+```
+
+
+
 ## Assumptions
 
 This recipe assumes you have a config/sidekiq.yml located in root of the App you are deploying.
