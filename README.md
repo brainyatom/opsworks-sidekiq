@@ -3,7 +3,7 @@ opsworks-sidekiq
 
 Opsworks sidekiq cookbook for Ubuntu and Rails or non-rails sidekiq deploys
 
-# Installation instructions
+## Installation instructions
 
 1) Make sure you have Redis installed.  This cookbook seems decent: https://github.com/brianbianco/redisio
 
@@ -32,3 +32,7 @@ Here is an example Custom JSON:
   }
 }
 ```
+
+## Assumptions
+
+This recipe assumes you have a config/sidekiq.yml located in root of the App you are deploying.
