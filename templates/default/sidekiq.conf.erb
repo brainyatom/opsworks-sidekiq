@@ -1,19 +1,16 @@
-# /etc/init/sidekiq.conf - Sidekiq config
-
 # This example config should work with Ubuntu 12.04+.  It
-# allows you to manage multiple Sidekiq instances with
+# allows you to manage Sidekiq instances with
 # Upstart, Ubuntu's native service management tool.
 #
-# See workers.conf for how to manage all Sidekiq instances at once.
+# NOTE: This is heavily inspired by Sidekiq's example sidekiq.conf
 #
-# Save this config as /etc/init/sidekiq.conf then mange sidekiq with:
-#   sudo start sidekiq index=0
-#   sudo stop sidekiq index=0
-#   sudo status sidekiq index=0
+# Save this config as /etc/init/sidekiq-APPNAME.conf then mange sidekiq with:
+#   sudo start sidekiq-APPNAME
+#   sudo stop sidekiq-APPNAME
+#   sudo status sidekiq-APPNAME
 #
 # or use the service command:
-#   sudo service sidekiq {start,stop,restart,status}
-#
+#   sudo service sidekiq-APPNAME {start,stop,restart,status}
 
 description "Sidekiq Background Worker"
 
