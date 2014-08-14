@@ -11,6 +11,8 @@ node[:deploy].each do |application, deploy|
       group "root"
       mode 0644
       variables({
+        user: deploy[:user],
+        group: deploy[:group],
         release_path: release_path,
         require_path: require_path,
         sidekiq_env: sidekiq_env

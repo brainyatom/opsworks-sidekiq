@@ -18,8 +18,8 @@ description "Sidekiq Background Worker"
 stop on (stopping workers or runlevel [06])
 
 # change to match your deployment user
-setuid deploy
-setgid www-data
+setuid <%= @user %>
+setgid <%= @group %>
 
 respawn
 respawn limit 3 30
@@ -30,5 +30,5 @@ normal exit 0 TERM USR1
 chdir "<%= @release_path %>"
 
 script
-  exec bundle exec -e <%= @sidekiq_env %> -C config/sidekiq.yml -r "<%= @require_path %>" sidekiq
+  exec bundle exec sidekiq -e <%= @sidekiq_env %> -C config/sidekiq.yml -r "<%= @require_path %>"
 end script
