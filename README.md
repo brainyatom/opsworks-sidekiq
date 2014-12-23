@@ -15,7 +15,7 @@ Opsworks sidekiq cookbook for Ubuntu and Rails or non-rails sidekiq deploys
 
 Currently supported options for Sidekiq are:
 
-* environment: Defaults to production
+* rails_env: Defaults to production
 * require: Defaults to the deploy[:deploy_to]/current directory.  Paths should be relative to the 'current' deploy directory.
 
 Here is an example Custom JSON:
@@ -25,7 +25,7 @@ Here is an example Custom JSON:
   "deploy": {
     "YOURAPPNAME": {
       "sidekiq": {
-        "environment": "production",
+        "rails_env": "production",
         "require": "config/boot.rb"
       }
     }
