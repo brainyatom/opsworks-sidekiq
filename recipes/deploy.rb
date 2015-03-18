@@ -3,6 +3,7 @@ node[:deploy].each do |application, deploy|
     release_path = ::File.join(deploy[:deploy_to], 'current')
     sidekiq_env = deploy['sidekiq']['rails_env'] || 'production'
     require_path = ::File.expand_path(deploy['sidekiq']['require'] || '.', release_path)
+    environment_variables = deploy['environment']
 
     template "setup sidekiq.conf" do
       path "/etc/init/sidekiq-#{application}.conf"
@@ -15,7 +16,8 @@ node[:deploy].each do |application, deploy|
         group: deploy[:group],
         release_path: release_path,
         require_path: require_path,
-        sidekiq_env: sidekiq_env
+        sidekiq_env: sidekiq_env,
+        environment_variables: environment_variables
       })
     end
 

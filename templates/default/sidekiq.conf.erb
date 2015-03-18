@@ -17,6 +17,11 @@ description "Sidekiq Background Worker"
 # no "start on", we don't want to automatically start
 stop on (stopping workers or runlevel [06])
 
+# set the environment variables from the OpsWorks App Interface
+<% @environment_variables.each_pair do |k, v| %>
+env <%= k %>=<%= v %>
+<% end %>
+
 # change to match your deployment user
 setuid <%= @user %>
 setgid <%= @group %>
