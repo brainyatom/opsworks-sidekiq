@@ -13,27 +13,38 @@ Opsworks sidekiq cookbook for Ubuntu and Rails or non-rails sidekiq deploys
 
 4) Configure your sidekiq custom JSON to specify Sidekiq should be deployed with this app:
 
-Currently supported options for Sidekiq are:
 
-* rails_env: Defaults to production
-* require: Defaults to the deploy[:deploy_to]/current directory.  Paths should be relative to the 'current' deploy directory.
+### Supported Options
 
-Here is an example Custom JSON:
+Currently supported options for the Sidekiq deploy recipe are:
+
+* start_command
+
+The command to start sidekiq.  This will run relative to the root of the current release path.
+
+Defaults to:
+
+```bash
+bundle exec sidekiq -e production -C config/sidekiq.yml -r ./config/boot.rb 2>&1 >> log/sidekiq.log
+```
+
+### Sample Chef JSON configuration
+
+Here is an example Custom JSON which overrides overrides the start_command to set the sidekiq environment to staging:
 
 ```json
 {
   "deploy": {
     "YOURAPPNAME": {
       "sidekiq": {
-        "rails_env": "production",
-        "require": "config/boot.rb"
+        "start_command": "bundle exec sidekiq -e staging -C config/sidekiq.yml -r ./config/boot.rb >2&1 >> log/sidekiq.log"
       }
     }
   }
 }
 ```
 
-Or with just using the defaults:
+Here is the minimum deploy config required:
 ```json
 {
   "deploy": {
@@ -44,8 +55,6 @@ Or with just using the defaults:
 }
 ```
 
+### Environment variables
 
-
-## Assumptions
-
-This recipe assumes you have a config/sidekiq.yml located in root of the App you are deploying.
+All Opsworks environment_variables defined within your application will be exposed to the Sidekiq process via the upstart script.

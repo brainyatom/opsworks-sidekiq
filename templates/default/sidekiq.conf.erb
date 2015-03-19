@@ -5,17 +5,17 @@
 # NOTE: This is heavily inspired by Sidekiq's example sidekiq.conf
 #
 # Save this config as /etc/init/sidekiq-APPNAME.conf then mange sidekiq with:
-#   sudo start sidekiq-APPNAME
-#   sudo stop sidekiq-APPNAME
-#   sudo status sidekiq-APPNAME
+#   sudo start sidekiq-<%= @app_name %>
+#   sudo stop sidekiq-<%= @app_name %>
+#   sudo status sidekiq-<%= @app_name %>
 #
 # or use the service command:
-#   sudo service sidekiq-APPNAME {start,stop,restart,status}
+#   sudo service sidekiq-<%= @app_name %> {start,stop,restart,status}
 
-description "Sidekiq Background Worker"
+description "Sidekiq Upstart process"
 
-# no "start on", we don't want to automatically start
-stop on (stopping workers or runlevel [06])
+start on started network-services
+stop on stopping network-services
 
 # change to match your deployment user
 setuid <%= @user %>
@@ -29,6 +29,10 @@ normal exit 0 TERM USR1
 
 chdir "<%= @release_path %>"
 
+<% @env.each do |k,v| %>
+env <%= k %>=<%= (v || '').to_s.gsub('"', '\\"') %>
+<% end %>
+
 script
-  exec bundle exec sidekiq -e <%= @sidekiq_env %> -C config/sidekiq.yml -r "<%= @require_path %>"
+  exec <%= @start_command %>
 end script
