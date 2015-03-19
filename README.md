@@ -9,13 +9,13 @@ Opsworks sidekiq cookbook for Ubuntu and Rails or non-rails sidekiq deploys
 
 2) Add this cookbook to your list of Custom Cookbooks
 
-3) Add sidekiq::deploy to your Application's Deploy custom recipe. 
+3) Add the deploy recipe in this cookbook to your Application's Deploy custom recipe.  This should be place AFTER your application is deployed to ensure Sidekiq uses the new code checked out.
 
 4) Configure your sidekiq custom JSON to specify Sidekiq should be deployed with this app:
 
 Currently supported options for Sidekiq are:
 
-* environment: Defaults to production
+* rails_env: Defaults to production
 * require: Defaults to the deploy[:deploy_to]/current directory.  Paths should be relative to the 'current' deploy directory.
 
 Here is an example Custom JSON:
@@ -25,7 +25,7 @@ Here is an example Custom JSON:
   "deploy": {
     "YOURAPPNAME": {
       "sidekiq": {
-        "environment": "production",
+        "rails_env": "production",
         "require": "config/boot.rb"
       }
     }
