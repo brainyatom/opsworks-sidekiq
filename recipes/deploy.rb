@@ -1,9 +1,8 @@
 node[:deploy].each do |application, deploy|
   if deploy['sidekiq']
-    sidekiq_config = deploy['sidekiq']
     release_path = ::File.join(deploy[:deploy_to], 'current')
-    start_command = sidekiq_config['start_command'] || "bundle exec sidekiq -e production -C config/sidekiq.yml -r ./config/boot.rb 2>&1 >> log/sidekiq.log"
-    env = deploy['environment_variables'] || {}
+    sidekiq_env = deploy['sidekiq']['rails_env'] || 'production'
+    require_path = ::File.expand_path(deploy['sidekiq']['require'] || '.', release_path)
 
     template "setup sidekiq.conf" do
       path "/etc/init/sidekiq-#{application}.conf"
@@ -12,12 +11,9 @@ node[:deploy].each do |application, deploy|
       group "root"
       mode 0644
       variables({
-        app_name: application,
-        user: deploy[:user],
-        group: deploy[:group],
         release_path: release_path,
-        start_command: start_command,
-        env: env,
+        require_path: require_path,
+        sidekiq_env: sidekiq_env
       })
     end
 
@@ -26,10 +22,10 @@ node[:deploy].each do |application, deploy|
       supports stop: true, start: true, restart: true, status: true
     end
 
-    # always restart sidekiq on deploy since we assume the code must need to be reloaded
     bash 'restart_sidekiq' do
       code "echo noop"
       notifies :restart, "service[sidekiq-#{application}]"
     end
+
   end
 end
