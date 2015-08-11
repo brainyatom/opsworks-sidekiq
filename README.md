@@ -37,7 +37,7 @@ Here is an example Custom JSON which overrides overrides the start_command to se
   "deploy": {
     "YOURAPPNAME": {
       "sidekiq": {
-        "start_command": "bundle exec sidekiq -e staging -C config/sidekiq.yml -r ./config/boot.rb >2&1 >> log/sidekiq.log"
+        "start_command": "bundle exec sidekiq -e staging -C config/sidekiq.yml -r ./config/boot.rb 2>&1 >> log/sidekiq.log"
       }
     }
   }
