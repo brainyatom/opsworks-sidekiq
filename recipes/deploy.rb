@@ -2,7 +2,7 @@ node[:deploy].each do |application, deploy|
   if deploy['sidekiq']
     sidekiq_config = deploy['sidekiq']
     release_path = ::File.join(deploy[:deploy_to], 'current')
-    start_command = sidekiq_config['start_command'] || "bundle exec sidekiq -d -l log/sidekiq.log"
+    start_command = sidekiq_config['start_command'] || "bundle exec sidekiq -l log/sidekiq.log"
     env = deploy['environment_variables'] || {}
     rails_env = sidekiq_config['rails_env'] || deploy[:rails_env]
 
