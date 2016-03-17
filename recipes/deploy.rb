@@ -21,9 +21,13 @@ node[:deploy].each do |application, deploy|
       })
     end
 
-    service "sidekiq-#{application}" do
+    service_name = "sidekiq-#{application}"
+
+    service service_name do
       provider Chef::Provider::Service::Upstart
       supports stop: true, start: true, restart: true, status: true
+
+      restart_command "stop #{service_name}; start #{service_name}"
     end
 
     # always restart sidekiq on deploy since we assume the code must need to be reloaded
