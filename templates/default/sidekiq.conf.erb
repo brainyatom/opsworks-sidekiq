@@ -32,6 +32,10 @@ chdir "<%= @release_path %>"
 <% @env.each do |k,v| %>
 env <%= k %>=<%= (v || '').to_s.gsub('"', '\\"') %>
 <% end %>
+<% if @rails_env %>
+env RAILS_ENV=<%= @rails_env %>
+env RACK_ENV=<%= @rails_env %>
+<% end %>
 
 script
   exec <%= @start_command %>
